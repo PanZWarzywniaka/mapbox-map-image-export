@@ -10,7 +10,7 @@ window.console = remote.require('./main').console
 var argv = remote.require('./main').argv
 
 // var style = argv._[0]
-var style = "mapbox://styles/panzwarzywniaka/cltua6w1b008601qwe6m2e8bn"
+var style = "mapbox://styles/panzwarzywniaka/cltuc2ilu008901qwh0qvh2vc"
 // var style = JSON.parse(fs.readFileSync('styles/default_no_labels.json', 'utf8'));
 
 var format = {}
