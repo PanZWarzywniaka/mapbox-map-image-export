@@ -9,7 +9,10 @@ var exportMap = require('./lib/map_mosaic_stream.js')
 window.console = remote.require('./main').console
 var argv = remote.require('./main').argv
 
-var style = argv._[0]
+// var style = argv._[0]
+var style = "mapbox://styles/panzwarzywniaka/cltua6w1b008601qwe6m2e8bn"
+// var style = JSON.parse(fs.readFileSync('styles/default_no_labels.json', 'utf8'));
+
 var format = {}
 var width = 40
 var last = 0
