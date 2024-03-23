@@ -29,7 +29,12 @@ let win
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({ show: !!argv.debug })
+  win = new BrowserWindow({ show: !!argv.debug,
+    webPreferences: {
+      nodeIntegration: false
+    }
+  
+  })
   if (argv.debug) win.webContents.openDevTools()
   // win.webContents.openDevTools()
   // and load the index.html of the app.
