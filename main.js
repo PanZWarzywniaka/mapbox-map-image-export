@@ -31,7 +31,7 @@ function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({ show: !!argv.debug,
     webPreferences: {
-      nodeIntegration: false
+      nodeIntegration: true
     }
   
   })
