@@ -12,6 +12,7 @@
     "@turf/bbox-polygon": "^6.0.1",
     "decimal.js": "^10.0.1",
     "electron": "^3.0.7",
+    "express": "^4.19.1",
     "from2": "^2.3.0",
     "gl-fbo": "^2.0.5",
     "gl-pixel-stream": "^1.2.0",
