@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 var electron = require("electron");
 const { spawnSync } = require('child_process');
-
 const express = require("express");
 
 const app = express();
@@ -14,7 +13,7 @@ app.get("/", (req, res) => {
         "-h=15in",
         "-d=288",
         "-b=-74.20684568826417,40.528628319424,-73.70390910359002,41.004764240546365",
-        "-t=pk.eyJ1IjoicGFuendhcnp5d25pYWthIiwiYSI6ImNsdGcydzFtdTB4aDgyaXJ0cDBmZTl6aHMifQ.j3j7zHRSuFDj2maiwwvgVA",
+        `-t=${process.env.MAPBOX_TOKEN}`,
         `-o=${file_name}`,
         "--debug",
     ];

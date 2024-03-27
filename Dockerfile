@@ -18,16 +18,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY . .
-# RUN npm install
-# RUN npm install mapbox-map-image-export -g
-
 ENV MAPBOX_TOKEN=pk.eyJ1IjoicGFuendhcnp5d25pYWthIiwiYSI6ImNsdGcydzFtdTB4aDgyaXJ0cDBmZTl6aHMifQ.j3j7zHRSuFDj2maiwwvgVA
 ENV DISPLAY=:1
 ENV PORT=3000
 
 EXPOSE 3000
 
-# CMD ["Xvfb :1 -nolisten tcp -shmem &"]
-# CMD export-map mapbox://styles/mapbox/streets-v9 -w=11in -h=8.5in -b=-7.1354,57.9095,-6.1357,58.516 -t=$MAPBOX_TOKEN -o=docker.png
-# CMD ["node", "cmd.js", "-w=12in", "-h=15in", "-d=288", "-b=-74.20684568826417,40.528628319424,-73.70390910359002,41.004764240546365", "-t=$MAPBOX_TOKEN", "-o=renders/docker.png"]
+COPY . .
+
+# start Xvfb server and start a server
+CMD Xvfb :1 -nolisten tcp -shmem & node server.js
