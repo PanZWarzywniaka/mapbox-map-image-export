@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
     const width = 36//12
     const height = 45//15 
     const dpi = 96//288 
-    const file_name = `renders/lewis_${width}x${height}@${dpi}.png`
+    const file_name = `map_${width}x${height}@${dpi}.png`
     const style = JSON.parse(fs.readFileSync('styles/default_no_labels.json', 'utf8'));
     console.log("Style: ", style)
     const args = [
