@@ -2,6 +2,7 @@
 var electron = require("electron");
 const { spawnSync } = require('child_process');
 const express = require("express");
+var fs = require('fs')
 
 const app = express();
 
@@ -10,8 +11,11 @@ app.get("/", (req, res) => {
     const height = 45//15 
     const dpi = 96//288 
     const file_name = `renders/lewis_${width}x${height}@${dpi}.png`
+    const style = JSON.parse(fs.readFileSync('styles/default_no_labels.json', 'utf8'));
+    console.log("Style: ", style)
     const args = [
-        `./main.js`,
+        `./lib/main.js`,
+        style,
         `-w=${width}in`,
         `-h=${height}in`,
         `-d=${dpi}`,
