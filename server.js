@@ -6,16 +6,19 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-    const file_name = "renders/lewis_12x15.png"
+    const width = 36//12
+    const height = 45//15 
+    const dpi = 96//288 
+    const file_name = `renders/lewis_${width}x${height}@${dpi}.png`
     const args = [
-        "./main.js",
-        "-w=12in",
-        "-h=15in",
-        "-d=288",
-        "-b=-74.20684568826417,40.528628319424,-73.70390910359002,41.004764240546365",
+        `./main.js`,
+        `-w=${width}in`,
+        `-h=${height}in`,
+        `-d=${dpi}`,
+        `-b=-74.20,40.52,-73.70,41.004`,
         `-t=${process.env.MAPBOX_TOKEN}`,
         `-o=${file_name}`,
-        "--debug",
+        `--debug`,
     ];
 
     const child = spawnSync(electron, args, { stdio: "inherit" });
