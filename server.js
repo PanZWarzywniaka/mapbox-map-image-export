@@ -11,18 +11,18 @@ app.get("/", (req, res) => {
     const height = 45//15 
     const dpi = 96//288 
     const file_name = `map_${width}x${height}@${dpi}.png`
-    const style = JSON.parse(fs.readFileSync('styles/default_no_labels.json', 'utf8'));
-    console.log("Style: ", style)
+    // const style = JSON.parse(fs.readFileSync('styles/default_no_labels.json', 'utf8'));
+    // console.log("Style: ", style)
     const args = [
         `./lib/main.js`,
-        style,
+        // style,
         `-w=${width}in`,
         `-h=${height}in`,
         `-d=${dpi}`,
         `-b=-74.20,40.52,-73.70,41.004`,
         `-t=${process.env.MAPBOX_TOKEN}`,
         `-o=${file_name}`,
-        `--debug`,
+        // `--debug`,
     ];
 
     const child = spawnSync(electron, args, { stdio: "inherit" });
