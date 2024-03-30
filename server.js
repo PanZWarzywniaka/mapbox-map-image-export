@@ -3,16 +3,14 @@ var electron = require("electron");
 const { spawnSync } = require('child_process');
 const express = require("express");
 var fs = require('fs')
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-    const width = 36//12
-    const height = 45//15 
-    const dpi = 96//288 
+function renderMapSync(width, height, dpi) {
+
     const file_name = `map_${width}x${height}@${dpi}.png`
-    // const style = JSON.parse(fs.readFileSync('styles/default_no_labels.json', 'utf8'));
-    // console.log("Style: ", style)
     const args = [
         `./lib/main.js`,
         // style,
@@ -24,11 +22,33 @@ app.get("/", (req, res) => {
         `-o=${file_name}`,
         // `--debug`,
     ];
-
     const child = spawnSync(electron, args, { stdio: "inherit" });
     console.log("Done exporting")
+    return file_name
+}
+
+app.get("/", (req, res) => {
+    const width = 36//12
+    const height = 45//15 
+    const dpi = 96//288 
+
+    const file_name = renderMapSync(width, height, dpi)
     res.sendFile(file_name, { root: __dirname });
 });
+
+app.post('/map', (req, res) => {
+    // Extract parameters from the request body
+    const { width, height, dpi } = req.body;
+
+    // Check if all parameters are present
+    if (!width || !height || !dpi) {
+        return res.status(400).send('Missing required parameters: width, height, dpi');
+    }
+
+    const file_name = renderMapSync(width, height, dpi)
+    res.sendFile(file_name, { root: __dirname });
+});
+
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
