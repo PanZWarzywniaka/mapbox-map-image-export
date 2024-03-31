@@ -5,22 +5,25 @@ const express = require("express");
 var fs = require('fs')
 const bodyParser = require('body-parser');
 
+const RENDERS_DIR = 'renders'
+
 const app = express();
+app.use(express.static(RENDERS_DIR));
 app.use(bodyParser.json());
 
-function renderMapSync(width, height, dpi) {
+function renderMapSync(width, height, dpi, bbox) {
 
-    const file_name = `map_${width}x${height}@${dpi}.png`
+    const file_name = `map_${width}x${height}@${dpi}_${bbox}.png`
     const args = [
         `./lib/main.js`,
         // style,
         `-w=${width}in`,
         `-h=${height}in`,
         `-d=${dpi}`,
-        `-b=-74.20,40.52,-73.70,41.004`,
+        `-b=${bbox}`,
         `-t=${process.env.MAPBOX_TOKEN}`,
-        `-o=${file_name}`,
-        // `--debug`,
+        `-o=${RENDERS_DIR}/${file_name}`,
+        `--debug`,
     ];
     const child = spawnSync(electron, args, { stdio: "inherit" });
     console.log("Done exporting")
@@ -28,25 +31,26 @@ function renderMapSync(width, height, dpi) {
 }
 
 app.get("/", (req, res) => {
-    const width = 36//12
-    const height = 45//15 
-    const dpi = 96//288 
+    const width = 12
+    const height = 15 
+    const dpi = 96 //288 
+    const bbox = '-74.20,40.52,-73.70,41.004'
 
-    const file_name = renderMapSync(width, height, dpi)
-    res.sendFile(file_name, { root: __dirname });
+    const file_name = renderMapSync(width, height, dpi, bbox)
+    res.sendFile(`${RENDERS_DIR}/${file_name}`, { root: __dirname });
 });
 
-app.post('/map', (req, res) => {
+app.post('/', (req, res) => {
     // Extract parameters from the request body
-    const { width, height, dpi } = req.body;
+    const { width, height, dpi, bbox } = req.body;
 
-    // Check if all parameters are present
-    if (!width || !height || !dpi) {
-        return res.status(400).send('Missing required parameters: width, height, dpi');
+    // TODO better validation
+    if (!width || !height || !dpi || !bbox) {
+        return res.status(400).send('Missing required parameters: width, height, dpi, bbox');
     }
 
-    const file_name = renderMapSync(width, height, dpi)
-    res.sendFile(file_name, { root: __dirname });
+    const file_name = renderMapSync(width, height, dpi, bbox)
+    res.send(file_name)
 });
 
 
