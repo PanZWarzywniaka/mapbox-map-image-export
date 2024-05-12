@@ -11,12 +11,12 @@ const app = express();
 app.use(express.static(RENDERS_DIR));
 app.use(bodyParser.json());
 
-function renderMap(sync, width, height, dpi, bbox) {
+function renderMap(sync, width, height, dpi, bbox, waterCol) {
 
     const file_name = `map_${width}x${height}@${dpi}_${bbox}.png`
     const args = [
         `./lib/main.js`,
-        // style,
+        waterCol,
         `-w=${width}in`,
         `-h=${height}in`,
         `-d=${dpi}`,
@@ -26,7 +26,7 @@ function renderMap(sync, width, height, dpi, bbox) {
     ];
 
     if (sync) {
-        console.log("Rendering syncronously");
+        console.log("Rendering synchronously");
         const child = spawnSync(electron, args, { stdio: "inherit" });
     } else {
         
@@ -57,14 +57,15 @@ app.get("/", (req, res) => {
 
 app.post('/', (req, res) => {
     // Extract parameters from the request body
-    const { width, height, dpi, bbox } = req.body;
+    console.log(req.body);
+    const { width, height, dpi, bbox, waterCol } = req.body;
 
     // TODO better validation
     if (!width || !height || !dpi || !bbox) {
         return res.status(400).send('Missing required parameters: width, height, dpi, bbox');
     }
-
-    const file_name = renderMap(true, width, height, dpi, bbox)
+    
+    const file_name = renderMap(true, width, height, dpi, bbox, waterCol)
     res.send(file_name)
 });
 
